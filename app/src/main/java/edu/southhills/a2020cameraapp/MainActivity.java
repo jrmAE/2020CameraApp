@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
@@ -76,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
     private File createImageFile() throws IOException {
         String timestamp = new SimpleDateFormat("yyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timestamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        File storageDirOld = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+//        File storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDirOld);
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -89,5 +89,10 @@ public class MainActivity extends AppCompatActivity {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
+    }
+
+    public void openListView(View v) {
+        Intent listViewIntent = new Intent(this, FileShareActivity.class);
+        startActivity(listViewIntent);
     }
 }
